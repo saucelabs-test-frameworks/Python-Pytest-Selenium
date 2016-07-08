@@ -16,19 +16,21 @@ This code is provided on an "AS-IS” basis without warranty of any kind, either
     * In the terminal export your Sauce Labs Credentials as environmental variables:
     ```
     $ export SAUCE_USERNAME=<your Sauce Labs username>
-	$ export SAUCE_ACCESS_KEY=<your Sauce Labs access key>
+    $ export SAUCE_ACCESS_KEY=<your Sauce Labs access key>
     ```
+
 3. Project Dependencies
-	* Install packages (Use sudo if necessary)
-	```
-	$ pip install selenium sauceclient pytest pytest-xdist 
-	```
+    * Install packages (Use sudo if necessary)
+    ```
+    $ pip install selenium sauceclient pytest pytest-xdist
+    ```
+
 ### Running Tests
 
 Tests in Parallel:
-	```
-	$ make
-	```
+    ```
+    $ make
+    ```
 
 [Sauce Labs Dashboard](https://saucelabs.com/beta/dashboard/)
 
