@@ -6,41 +6,9 @@ from selenium import webdriver
 from sauceclient import SauceClient
 
 browsers = [{
-    'browserName': 'Browser',
-    'platformName': 'Android',
-    'platformVersion': '4.3',
-    'deviceName': 'Android Emulator',
-    'deviceOrientation': 'portrait',
-    'name': 'Python Selenium Android 4.3 example'
-}, {
-    'browserName': 'Browser',
-    'platformName': 'Android',
-    'platformVersion': '5.1',
-    'deviceName': 'Android Emulator',
-    'deviceOrientation': 'portrait',
-    'name': 'Python Selenium Android 5.1 example'
-}, {
-    'browserName': 'Safari',
-    'platformName': 'iOS',
-    'platformVersion': '9.2',
-    'deviceName': 'iPhone 6',
-    'deviceOrientation': 'portrait',
-    'name': 'Python Selenium iOS 9.2 example'
-}, {
-    'browserName': 'Safari',
-    'platformName': 'iOS',
-    'platformVersion': '8.4',
-    'deviceName': 'iPhone 6',
-    'deviceOrientation': 'portrait',
-    'name': 'Python Selenium iPhone 6 iOS 8.4 example'
-}, {
     "platform": "Windows 10",
     "browserName": "internet explorer",
     "version": "11"
-}, {
-    "platform": "OS X 10.11",
-    "browserName": "safari",
-    "version": "9"
 }]
 
 
