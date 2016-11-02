@@ -88,7 +88,7 @@ class BaseTest(unittest.TestCase):
         self.driver.quit()
         sauce_client = SauceClient(BaseTest.username, BaseTest.access_key)
         status = (sys.exc_info() == (None, None, None))
-        sauce_client.jobs.update_job(self.driver.session_id, passed=status)
+        # sauce_client.jobs.update_job(self.driver.session_id, passed=status)
         test_name = "%s_%s" % (type(self).__name__, self.__name__)
         with(open(test_name + '.testlog', 'w')) as outfile:
             outfile.write("SauceOnDemandSessionID=%s job-name=%s\n" % (self.driver.session_id, test_name))
