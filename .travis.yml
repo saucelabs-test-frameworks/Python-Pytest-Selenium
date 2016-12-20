@@ -1,0 +1,12 @@
+sudo: true
+language: python
+python:
+  - "2.7.10"
+install: "pip install -r requirements.txt"
+script: "py.test -s -n 10 tests"
+env:
+  global:
+  - SAUCE_USERNAME=sauce_examples
+addons:
+  jwt:
+    secure: mpyuz5I26OGYdKkEguK0W4aqAhmswjEKz0zqEy8lyXR19utEHxHPx/yIPrlGO3A5XwC4liEnzBCzMm01sHjZWLu7KU6be84D2CQbTFV9lO2JAyl4SowgOUJrCGmf0wNOuiQdnNoHKm7CCef2OYUrgvBIuu6Nt5Z+GZAxMQHEv5Ot7gxg7ug0Xn23zcNm9xUkvOZI0TRaGMBuBTyFj4N1jL4xiT23wCdyYejHiWr76VFTMFnEWuDtwxAyyrJ1SftU1RN1r3Od7EhKTF4A2OavOsoBC8/V7FcMSaIfdViEH/c1uowJFC/Ffnwn9TUdbM3EGaqII1Rqm7tO/yEqhRRIfOFOBRq49IvzJQ9KDG+Izv6zoQ/Tl9YV5A4aTyOS2YBsHmvI3G/P0nLw4X2jQdURT9FjpbMT7LJjsWmFrL8VF2EJXfAN0UdXs0skmfC6LyLD6++5y+NRfXHgurFlTi+8bjjehu4pDTDcl9LNxgZEGmn5yHgMToxyFWSjQOzo6exf8ZmXQVbtjx6HyW4Atwb4YrJbKJ2MGBi44rcKRI5gD4jllXU3pv7TeQqWjpmzOsz0408RZ98yr5pz0M8ZZb4OzEVdNCRa/309hNblf/hJGTyMI9Yb08PkRkLPnVDWFqHZWXVjmSnreRIKBJiSFpsq3LvPvbv2HauV0Wc9Kn+/UwQ=
