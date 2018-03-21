@@ -35,7 +35,7 @@ This code is provided on an "AS-IS” basis without warranty of any kind, either
 ### Running Tests:  -n option designates number of parallel tests and -s to disable output capture.
 
 *  Tests in Parallel:
-    ```$ py.test -s -n 10 tests```
+    ```$ py.test -s -n 2 tests```
 
 * Dump session ids for the SauceLabs CI plugins:
     ```$ cat $(find . -name "*.testlog")```
