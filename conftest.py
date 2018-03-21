@@ -22,8 +22,8 @@ def driver(request):
     test_name = request.node.name
     build_tag = environ.get('BUILD_TAG', None)
     tunnel_id = environ.get('TUNNEL_IDENTIFIER', None)
-    username = environ.get('SAUCE_USER', None)
-    access_key = environ.get('SAUCE_KEY', None)
+    username = environ.get('SAUCE_USERNAME', None)
+    access_key = environ.get('SAUCE_ACCESS_KEY', None)
 
     selenium_endpoint = "http://{}:{}@ondemand.saucelabs.com:80/wd/hub".format(username, access_key)
     desired_caps['build'] = build_tag
