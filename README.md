@@ -46,7 +46,7 @@ This code is provided on an "AS-IS” basis without warranty of any kind, either
 ### Advice/Troubleshooting
 
 There may be additional latency when using a remote webdriver to run tests on Sauce Labs. Timeouts or Waits may need to be increased.
-    * [Selenium tips regarding explicit waits](https://wiki.saucelabs.com/display/DOCS/Best+Practice%3A+Use+Explicit+Waits)
+* [Selenium tips regarding explicit waits](https://wiki.saucelabs.com/display/DOCS/Best+Practice%3A+Use+Explicit+Waits)
 
 ### Resources
 ##### [Sauce Labs Documentation](https://wiki.saucelabs.com/)
