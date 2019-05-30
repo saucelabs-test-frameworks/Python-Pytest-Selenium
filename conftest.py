@@ -48,14 +48,20 @@ def pytest_generate_tests(metafunc):
 def _generate_param_ids(name, values):
     return [("<%s:%s>" % (name, value)).replace('.', '_') for value in values]
 
-    desired_caps.update(browser)
+
+@pytest.yield_fixture(scope='function')
+def driver(request, browser_config):
+    # if the assignment below does not make sense to you please read up on object assignments.
+    # The point is to make a copy and not mess with the original test spec.
+    desired_caps = dict()
+    desired_caps.update(browser_config)
     test_name = request.node.name
     build_tag = environ.get('BUILD_TAG', None)
     tunnel_id = environ.get('TUNNEL_IDENTIFIER', None)
     username = environ.get('SAUCE_USERNAME', None)
     access_key = environ.get('SAUCE_ACCESS_KEY', None)
 
-    selenium_endpoint = "http://{}:{}@ondemand.saucelabs.com:80/wd/hub".format(username, access_key)
+    selenium_endpoint = "https://%s:%s@ondemand.saucelabs.com:443/wd/hub" % (username, access_key)
     desired_caps['build'] = build_tag
     # we can move this to the config load or not, also messing with this on a test to test basis is possible :)
     desired_caps['tunnelIdentifier'] = tunnel_id
@@ -67,14 +73,13 @@ def _generate_param_ids(name, values):
         desired_capabilities=desired_caps, 
         keep_alive=True
     )
-    yield browser
 
     # This is specifically for SauceLabs plugin.
     # In case test fails after selenium session creation having this here will help track it down.
     # creates one file per test non ideal but xdist is awful
-    if browser:
-        with open("{}.testlog".format(browser.session_id), 'w') as f:
-            f.write("SauceOnDemandSessionID={} job-name={}\n".format(browser.session_id, test_name))
+    if browser is not None:
+        with open("%s.testlog" % browser.session_id, 'w') as f:
+            f.write("SauceOnDemandSessionID=%s job-name=%s\n" % (browser.session_id, test_name))
     else:
         raise WebDriverException("Never created!")
 
