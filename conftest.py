@@ -1,95 +1,36 @@
 import pytest
-from os import environ
 
-from selenium import webdriver
-from selenium.common.exceptions import WebDriverException
-from selenium.webdriver.remote.remote_connection import RemoteConnection
+from simplesauce.options import SauceOptions
+from simplesauce.session import SauceSession
 
 import urllib3
 urllib3.disable_warnings()
 
 browsers = [
-    {
-        "seleniumVersion": '3.4.0',
-        "platform": "Windows 10",
-        "browserName": "MicrosoftEdge",
-        "version": "latest"
-    }, {
-        "seleniumVersion": '3.4.0',
-        "platform": "Windows 10",
-        "browserName": "firefox",
-        "version": "latest"
-    }, {
-        "seleniumVersion": '3.4.0',
-        "platform": "Windows 7",
-        "browserName": "internet explorer",
-        "version": "latest"
-    }, {
-        "seleniumVersion": '3.4.0',
-        "platform": "OS X 10.13",
-        "browserName": "safari",
-        "version": "latest-1"
-    }, {
-        "seleniumVersion": '3.4.0',
-        "platform": "OS X 10.11",
-        "browserName": "chrome",
-        "version": "latest",
-        "extendedDebugging": True
-    }]
-
-def pytest_generate_tests(metafunc):
-    if 'driver' in metafunc.fixturenames:
-        metafunc.parametrize('browser_config',
-                             browsers,
-                             ids=_generate_param_ids('broswerConfig', browsers),
-                             scope='function')
+    'internet explorer',
+    'chrome',
+    'firefox',
+    'edge'
+]
 
 
-def _generate_param_ids(name, values):
-    return [("<%s:%s>" % (name, value)).replace('.', '_') for value in values]
+@pytest.fixture(params=browsers)
+def driver(request):
+    opts = SauceOptions(browserName=request.param)
+    opts.name = request.node.name
+    sauce = SauceSession(options=opts)
+    sauce.start()
 
+    yield sauce.driver
 
-@pytest.yield_fixture(scope='function')
-def driver(request, browser_config):
-    # if the assignment below does not make sense to you please read up on object assignments.
-    # The point is to make a copy and not mess with the original test spec.
-    desired_caps = dict()
-    desired_caps.update(browser_config)
-    test_name = request.node.name
-    build_tag = environ.get('BUILD_TAG', None)
-    tunnel_id = environ.get('TUNNEL_IDENTIFIER', None)
-    username = environ.get('SAUCE_USERNAME', None)
-    access_key = environ.get('SAUCE_ACCESS_KEY', None)
-
-    selenium_endpoint = "https://%s:%s@ondemand.saucelabs.com:443/wd/hub" % (username, access_key)
-    desired_caps['build'] = build_tag
-    # we can move this to the config load or not, also messing with this on a test to test basis is possible :)
-    desired_caps['tunnelIdentifier'] = tunnel_id
-    desired_caps['name'] = test_name
-
-    executor = RemoteConnection(selenium_endpoint, resolve_ip=False)
-    browser = webdriver.Remote(
-        command_executor=executor,
-        desired_capabilities=desired_caps, 
-        keep_alive=True
-    )
-
-    # This is specifically for SauceLabs plugin.
-    # In case test fails after selenium session creation having this here will help track it down.
-    # creates one file per test non ideal but xdist is awful
-    if browser is not None:
-        print("SauceOnDemandSessionID={} job-name={}".format(browser.session_id, test_name))
-    else:
-        raise WebDriverException("Never created!")
-
-    yield browser
-    # Teardown starts here
     # report results
     # use the test result to send the pass/fail status to Sauce Labs
-    sauce_result = "failed" if request.node.rep_call.failed else "passed"
-    browser.execute_script("sauce:job-result={}".format(sauce_result))
-    browser.quit()
+    if request.node.rep_call.failed:
+        sauce.update_test_result('failed')
+    else:
+        sauce.update_test_result('passed')
 
+    sauce.stop()
 
 @pytest.hookimpl(hookwrapper=True, tryfirst=True)
 def pytest_runtest_makereport(item, call):
